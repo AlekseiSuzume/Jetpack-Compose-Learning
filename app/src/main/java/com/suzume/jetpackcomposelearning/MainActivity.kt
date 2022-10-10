@@ -11,7 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.suzume.jetpackcomposelearning.ui.theme.JetpackComposeLearningTheme
-import com.suzume.jetpackcomposelearning.ui.theme.PostCard
+import com.suzume.jetpackcomposelearning.ui.theme.MainScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     .background(MaterialTheme.colors.background)
                     .padding(8.dp),
                 ) {
-                    PostCard()
+                    MainScreen()
                 }
             }
         }

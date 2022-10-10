@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Jetpack Compose Learning</string>
     <string name="template_text">Jetpack Compose is Android\'s modern toolkit for building native UI. It simplifies and accelerates UI development on Android.</string>
+    <string name="label_home">Главная</string>
+    <string name="label_favorite">Избранное</string>
+    <string name="label_profile">Профиль</string>
 </resources>
