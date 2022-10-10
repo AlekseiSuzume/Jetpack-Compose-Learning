@@ -1,6 +1,6 @@
 package com.suzume.jetpackcomposelearning.domain.model
 
-class StatisticItem(
+data class StatisticItem(
     val type: StatisticItemType,
     val count: Int = 0
 ) {

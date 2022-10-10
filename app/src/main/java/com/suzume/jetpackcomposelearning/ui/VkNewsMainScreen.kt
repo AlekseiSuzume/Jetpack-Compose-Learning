@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.suzume.jetpackcomposelearning.MainViewModel
 import com.suzume.jetpackcomposelearning.domain.model.GroupPostModel
+import com.suzume.jetpackcomposelearning.domain.model.StatisticItemType
 
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
@@ -36,6 +37,16 @@ fun MainScreen(viewModel: MainViewModel) {
             }
         }
     ) {
-        PostCard(post.value)
+        PostCard(
+            post = post.value,
+            onStatisticClickListener = {
+                when (it.type) {
+                    StatisticItemType.VIEWS -> viewModel.onViewsClick()
+                    StatisticItemType.REPOSTS -> viewModel.onRepostsClick()
+                    StatisticItemType.COMMENTS -> viewModel.onCommentsClick()
+                    StatisticItemType.LIKES -> viewModel.onLikesClick()
+                }
+            }
+        )
     }
 }
