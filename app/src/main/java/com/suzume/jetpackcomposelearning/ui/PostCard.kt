@@ -1,6 +1,7 @@
 package com.suzume.jetpackcomposelearning.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -22,6 +23,7 @@ import com.suzume.jetpackcomposelearning.domain.model.StatisticItemType
 @Composable
 fun PostCard(
     post: GroupPostModel,
+    onStatisticClickListener: (StatisticItem) -> Unit,
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(8.dp)) {
@@ -35,7 +37,10 @@ fun PostCard(
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth
             )
-            PostStatistics(post.statistics)
+            PostStatistics(
+                statistics = post.statistics,
+                onStatisticClickListener = onStatisticClickListener
+            )
         }
     }
 }
@@ -76,33 +81,44 @@ private fun PostHeader(
 @Composable
 private fun PostStatistics(
     statistics: List<StatisticItem>,
+    onStatisticClickListener: (StatisticItem) -> Unit,
 ) {
 
     Row(
     ) {
-        Row(modifier = Modifier.weight(1f)) {
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .clickable { }
+        ) {
             val itemViews = statistics.find(StatisticItemType.VIEWS)
             IconWithText(
                 iconResId = R.drawable.ic_visibility,
-                text = itemViews.count.toString()
+                text = itemViews.count.toString(),
+                onItemClickListener = { onStatisticClickListener(itemViews) }
             )
         }
-        Row(modifier = Modifier.weight(1f),
-            horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             val itemReposts = statistics.find(StatisticItemType.REPOSTS)
             IconWithText(
                 iconResId = R.drawable.ic_repost,
-                text = itemReposts.count.toString()
+                text = itemReposts.count.toString(),
+                onItemClickListener = { onStatisticClickListener(itemReposts) }
             )
             val itemComments = statistics.find(StatisticItemType.COMMENTS)
             IconWithText(
                 iconResId = R.drawable.ic_comment,
-                text = itemComments.count.toString()
+                text = itemComments.count.toString(),
+                onItemClickListener = { onStatisticClickListener(itemComments) }
             )
             val itemLikes = statistics.find(StatisticItemType.LIKES)
             IconWithText(
                 iconResId = R.drawable.ic_like,
-                text = itemLikes.count.toString()
+                text = itemLikes.count.toString(),
+                onItemClickListener = { onStatisticClickListener(itemLikes) }
             )
         }
     }
@@ -116,8 +132,12 @@ private fun List<StatisticItem>.find(type: StatisticItemType): StatisticItem {
 private fun IconWithText(
     iconResId: Int,
     text: String,
+    onItemClickListener: () -> Unit,
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier.clickable { onItemClickListener() },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Icon(
             painter = painterResource(id = iconResId),
             contentDescription = null,
