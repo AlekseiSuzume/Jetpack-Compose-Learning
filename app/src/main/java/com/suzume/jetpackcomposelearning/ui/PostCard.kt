@@ -1,4 +1,4 @@
-package com.suzume.jetpackcomposelearning.ui.theme
+package com.suzume.jetpackcomposelearning.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -13,50 +13,55 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.suzume.jetpackcomposelearning.R
+import com.suzume.jetpackcomposelearning.domain.model.GroupPostModel
+import com.suzume.jetpackcomposelearning.domain.model.StatisticItem
+import com.suzume.jetpackcomposelearning.domain.model.StatisticItemType
 
 @Composable
-fun PostCard() {
+fun PostCard(
+    post: GroupPostModel,
+) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(8.dp)) {
-            PostHeader()
+            PostHeader(post)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = stringResource(R.string.template_text))
+            Text(text = post.text)
             Image(modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-                painter = painterResource(id = R.drawable.template_post_image_dark),
+                painter = painterResource(id = post.attachmentId),
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth
             )
-            PostStatistics()
+            PostStatistics(post.statistics)
         }
     }
 }
 
 @Composable
-private fun PostHeader() {
+private fun PostHeader(
+    post: GroupPostModel,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             modifier = Modifier
                 .size(48.dp),
-            painter = painterResource(id = R.drawable.ic_icon_github),
+            painter = painterResource(id = post.iconId),
             contentDescription = null
         )
         Spacer(modifier = Modifier.width(8.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "/github.com/null",
+                text = post.groupName,
                 color = MaterialTheme.colors.onPrimary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "15:00",
+                text = post.date,
                 color = MaterialTheme.colors.onSecondary
             )
         }
@@ -69,23 +74,42 @@ private fun PostHeader() {
 }
 
 @Composable
-private fun PostStatistics() {
-    Row(
+private fun PostStatistics(
+    statistics: List<StatisticItem>,
+) {
 
+    Row(
     ) {
         Row(modifier = Modifier.weight(1f)) {
+            val itemViews = statistics.find(StatisticItemType.VIEWS)
             IconWithText(
-                R.drawable.ic_visibility,
-                "2345"
+                iconResId = R.drawable.ic_visibility,
+                text = itemViews.count.toString()
             )
         }
         Row(modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.SpaceBetween) {
-            IconWithText(R.drawable.ic_share, "123")
-            IconWithText(R.drawable.ic_comment, "25")
-            IconWithText(R.drawable.ic_like, "777")
+            val itemReposts = statistics.find(StatisticItemType.REPOSTS)
+            IconWithText(
+                iconResId = R.drawable.ic_repost,
+                text = itemReposts.count.toString()
+            )
+            val itemComments = statistics.find(StatisticItemType.COMMENTS)
+            IconWithText(
+                iconResId = R.drawable.ic_comment,
+                text = itemComments.count.toString()
+            )
+            val itemLikes = statistics.find(StatisticItemType.LIKES)
+            IconWithText(
+                iconResId = R.drawable.ic_like,
+                text = itemLikes.count.toString()
+            )
         }
     }
+}
+
+private fun List<StatisticItem>.find(type: StatisticItemType): StatisticItem {
+    return this.find { it.type == type } ?: throw RuntimeException("Unknown type: $type")
 }
 
 @Composable
@@ -104,21 +128,5 @@ private fun IconWithText(
             text = text,
             color = MaterialTheme.colors.onSecondary
         )
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewLight() {
-    JetpackComposeLearningTheme(darkTheme = false) {
-        PostCard()
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewDark() {
-    JetpackComposeLearningTheme(darkTheme = true) {
-        PostCard()
     }
 }

@@ -1,17 +1,18 @@
-package com.suzume.jetpackcomposelearning.ui.theme
+package com.suzume.jetpackcomposelearning.ui
 
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
-import kotlinx.coroutines.launch
+import com.suzume.jetpackcomposelearning.MainViewModel
+import com.suzume.jetpackcomposelearning.domain.model.GroupPostModel
 
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: MainViewModel) {
+
+    val post = viewModel.post.observeAsState(GroupPostModel())
 
     Scaffold(
         bottomBar = {
@@ -35,6 +36,6 @@ fun MainScreen() {
             }
         }
     ) {
-        PostCard()
+        PostCard(post.value)
     }
 }
