@@ -25,8 +25,11 @@ fun PostCard(
     post: GroupPostModel,
     onStatisticClickListener: (StatisticItem) -> Unit,
 ) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(8.dp)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        Column {
             PostHeader(post)
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = post.text)
