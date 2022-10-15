@@ -29,7 +29,9 @@ fun PostCard(
         modifier = Modifier
             .fillMaxWidth(),
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ) {
             PostHeader(post)
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = post.text)
@@ -92,7 +94,6 @@ private fun PostStatistics(
         Row(
             modifier = Modifier
                 .weight(1f)
-                .clickable { }
         ) {
             val itemViews = statistics.find(StatisticItemType.VIEWS)
             IconWithText(
